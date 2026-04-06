@@ -234,7 +234,7 @@ function initializeApp() {
             clusterCanvas.classList.add('active-drawing');
             finishPlacementBtn.style.display = 'none';
             goToFeedbackBtn.style.display = 'inline-block';
-            updateStatusMessage('食品を円で囲んでクラスターを作成 (3つ以上中に入れる)、または既存のクラスターをクリックして削除できます。');
+            updateStatusMessage('プリンセスを円で囲んでクラスターを作成 (3つ以上中に入れる)、または既存のクラスターをクリックして削除できます。');
         });
     }
 
