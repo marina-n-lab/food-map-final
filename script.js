@@ -132,6 +132,16 @@ function displayFoodDetails(food) {
     if (foodContainers[food.name]) foodContainers[food.name].classList.add('selected-food-item');
 }
 
+if (goToFeedbackBtn) {
+goToFeedbackBtn.addEventListener('click', () => {
+const hasMeatpie = experimentData.clusters.some(
+c => (c.items || []).some(it => [it.name](http://it.name/) === MEATPIE_ID)
+);
+if (!hasMeatpie) {
+alert('ミートパイを含むクラスターを1つ以上作成してください。');
+return;
+}
+  
 function resetScreen3UI() {
     if (canvasContainer) {
         canvasContainer.querySelectorAll('.food-container').forEach(fc => fc.remove());
