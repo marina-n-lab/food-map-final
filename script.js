@@ -66,17 +66,14 @@ const MIN_GAP = 12;          // アイコン同士のすき間目安
 // 食品リスト
 let foodList = [
     { name: "aurora", label: "オーロラ姫", imgSrc: "aurora_738f085c.jpeg", info: "「オーロラ姫」" },
-    { name: "elsa", label: "エルサ", imgSrc: "IMG_9781.JPG", info: "「アナと雪の女王」" },
+    { name: "elsa", label: "アナとエルサ", imgSrc: "IMG_9781.JPG", info: "「アナと雪の女王」" },
     { name: "rapunzel", label: "ラプンツェル", imgSrc: "rapunzel_8f01586c.jpeg", info: "「塔の上のラプンツェル」" },
     { name: "snow_white", label: "白雪姫", imgSrc: "snow_white_37217e1f.jpeg", info: "「白雪姫」" },
     { name: "tiana", label: "ティアナ", imgSrc: "tiana_639e40da.jpeg", info: "「プリンセスと魔法のキス」" },
     { name: "vanellope", label: "ヴァネロペ", imgSrc: "ヴァネロペ.jpeg", info: "「シュガーラッシュ」" },
     { name: "cinderella", label: "シンデレラ", imgSrc: "シンデレラ.jpeg", info: "「シンデレラ」" },
-    { name: "moana", label: "モアナ", imgSrc: "モアナ画像_from disneu.co.jp:fc:moana.jpeg", info: "「モアナと伝説の海」" },
-    { name: "reitou_udon", label: "冷凍", imgSrc: "7116302.jpg", info: "強いコシと弾力のさぬきうどんに、瀬戸内産いりこを使用しただし香るまろやかでコクのあるつゆ。麺はこだわりの包丁切りで、つゆとの絡みも良くお召し上がりいただけます。" },
-    { name: "reitou_pasta", label: "冷凍パスタ", imgSrc: "op_bolognese.jpg", info: "牛挽肉の旨みと赤ワインの風味が特長のボロネーゼソース。ゴーダチーズとごろっと大きな揚げなすをトッピング。" },
-    { name: "karaage", label: "鶏のから揚げ", imgSrc: "65a665121d4b5.png", info: "食欲を満たす肉の塊、これぞから揚げの金字塔！\nにんにく風味アップでさらに白飯がガツガツ進む！\n秘伝にんにく油、葱油、特級醤油の極旨仕込みだれにじっくり漬け込んだ香りがクセになるから揚げです。\n火入れの温度にこだわった”秘伝にんにく油”でにんにくの香りが引き立ち、肉汁がジュワッと広がります。" }
-];
+    { name: "jasmine", label: "ジャスミン", imgSrc: "", info: "「アラジン」" },
+
 
 function getCurrentTimestamp() {
     if (!experimentData.startTime) return 0;
@@ -238,15 +235,6 @@ function initializeApp() {
         });
     }
 
-    if (goToFeedbackBtn) {
-        goToFeedbackBtn.addEventListener('click', () => {
-            const hasMeatpie = experimentData.clusters.some(
-                c => (c.items || []).some(it => it.name === MEATPIE_ID)
-            );
-            if (!hasMeatpie) {
-                alert('ミートパイを含むクラスターを1つ以上作成してください。');
-                return;
-            }
             document.body.classList.add('feedback-mode-active'); // ★ この行を追加
             currentMode = 'clusterFeedback';
             removeActiveDeleteButton();
@@ -295,7 +283,7 @@ detailsPanel.appendChild(infoHeader);
                     formContainer.innerHTML = `
                         <h4>${cluster.name}${itemsText}</h4>
                         <label for="reasonCreated">このクラスターを作成した理由:</label>
-                        <textarea id="reasonCreated" rows="3" placeholder="例：これらは「洋食」という点で似ていると感じたため。">${cluster.feedback?.reasonCreated || ''}</textarea>
+                        <textarea id="reasonCreated" rows="3" placeholder="例：これらは「見た目」という点で似ていると感じたため。">${cluster.feedback?.reasonCreated || ''}</textarea>
                         <label for="meaning">どのような意味があると思いますか？:</label>
                         <textarea id="meaning" rows="3" placeholder="例：このグループは「子どもが好きな夕食メニュー」と言えるかもしれません。">${cluster.feedback?.meaning || ''}</textarea>
                         <label for="reasonName">その名前にした理由:</label>
