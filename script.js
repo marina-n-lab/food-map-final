@@ -1185,3 +1185,4 @@ function updateStatusMessage(message) {
 }
 
 document.addEventListener('DOMContentLoaded', initializeApp);
+initializeApp();
