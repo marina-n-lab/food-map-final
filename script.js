@@ -72,7 +72,7 @@ let foodList = [
     { name: "tiana", label: "ティアナ", imgSrc: "tiana_639e40da.jpeg", info: "「プリンセスと魔法のキス」" },
     { name: "vanellope", label: "ヴァネロペ", imgSrc: "ヴァネロペ.jpeg", info: "「シュガーラッシュ」" },
     { name: "cinderella", label: "シンデレラ", imgSrc: "シンデレラ.jpeg", info: "「シンデレラ」" },
-    { name: "jasmine", label: "ジャスミン", imgSrc: "1280x1280.webp", info: "「アラジン」" },
+    { name: "jasmine", label: "ジャスミン", imgSrc: "1280x1280.webp", info: "「アラジン」" }]
 
 
 function getCurrentTimestamp() {
