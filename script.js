@@ -19,7 +19,7 @@ function getFoodRectAndCenter(el, container) {
 function circleRectOverlapRatio(cx, cy, radius, rect, samplesPerSide = 20) {
   let inside = 0;
   const total = samplesPerSide * samplesPerSide;
-  for (let i = 0; i < samplesPerSide; i++) {　
+  for (let i = 0; i < samplesPerSide; i++) {
     for (let j = 0; j < samplesPerSide; j++) {
       const x = rect.left + (i + 0.5) * (rect.width  / samplesPerSide);
       const y = rect.top  + (j + 0.5) * (rect.height / samplesPerSide);
@@ -65,15 +65,18 @@ const MIN_GAP = 12;          // アイコン同士のすき間目安
 
 // 食品リスト
 let foodList = [
-    { name: "aurora", label: "オーロラ姫", imgSrc: "aurora_738f085c.jpeg", info: "「オーロラ姫」" },
-    { name: "elsa", label: "アナとエルサ", imgSrc: "IMG_9781.JPG", info: "「アナと雪の女王」" },
-    { name: "rapunzel", label: "ラプンツェル", imgSrc: "rapunzel_8f01586c.jpeg", info: "「塔の上のラプンツェル」" },
-    { name: "snow_white", label: "白雪姫", imgSrc: "snow_white_37217e1f.jpeg", info: "「白雪姫」" },
-    { name: "tiana", label: "ティアナ", imgSrc: "tiana_639e40da.jpeg", info: "「プリンセスと魔法のキス」" },
-    { name: "vanellope", label: "ヴァネロペ", imgSrc: "ヴァネロペ.jpeg", info: "「シュガーラッシュ」" },
-    { name: "cinderella", label: "シンデレラ", imgSrc: "シンデレラ.jpeg", info: "「シンデレラ」" },
-    { name: "jasmine", label: "ジャスミン", imgSrc: "1280x1280.webp", info: "「アラジン」" }]
-
+    { name: "aurora", label: "オーロラ姫", imgSrc: "aurora_738f085c.jpeg", info: "油・水なしで、誰が調理しても簡単にパリッパリの羽根ができる、うす皮パリッと、ジューシーで具がギュッと詰まった焼き餃子です。\n誰もが好きな、間違いない安定感のある王道のおいしさです。\n国産のお肉と野菜を使用しています。\n【内容量】12個入り（276g）" },
+    { name: "elsa", label: "エルサ", imgSrc: "IMG_9781.JPG", info: "焦がしにんにくのマー油と葱油の香ばしさや、噛むほどに広がる焼豚のうま味で、一度口にすると一心不乱に食べきってしまいたくなるチャーハンです。\n焦がしにんにくの香りを引き立たせ、焼豚の風味も調整し、メリハリのある味を実現。\nどんどん食べ進めたくなる味に進化しました。\n【内容量】580g" },
+    { name: "rapunzel", label: "ラプンツェル", imgSrc: "rapunzel_8f01586c.jpeg", info: "アルゼンチン伝統料理：具材をパイ生地で包んで焼いた料理。本場の味わいを楽しめるエンパナーダの6個セット。南米の伝統的な味を日本で堪能できます。\n食べ比べセット：シェフが厳選した６種類のエンパナーダを一度に楽しめる贅沢な詰め合わせパック" },
+    { name: "snow_white", label: "白雪姫", imgSrc: "snow_white_37217e1f.jpeg", info: "蔵王産ミルクを使用。チーズのおいしさとプリプリのえびがマッチしたグラタンです。\nチーズの風味豊かに！チーズを感じられるようカットサイズにもこだわっています。" },
+    { name: "tiana", label: "ティアナ", imgSrc: "tiana_639e40da.jpeg", info: "オーブンで焼き上げたチーズが香ばしい、生パスタを使った本格ラザニア。ちょっと小腹がすいた時、お夜食に、ランチメニューの一品に、ビールのおつまみなどにぴったりな一品です。" },
+    { name: "vanellope", label: "ヴァネロペ", imgSrc: "ヴァネロペ.jpeg", info: "チーズ風味が香るミートソースは、100%オージービーフを使用しています。家族や友達、みんなで楽しめる6個入りパックです。\nパイ生地は、フタ部分と下のパイで2種類の異なるパイ生地を使用しています。\n特に上のフタになっているパイはサクサクに仕上げているので、なかのトロっとしたソースとの絶妙なコンビネーションを楽しめます。" },
+    { name: "cinderella", label: "シンデレラ", imgSrc: "シンデレラ.jpeg", info: "爽やかな風味のリコッタチーズとほうれん草をパスタ生地で包みトマトソースで和えたラビオリです。リコッタのマイルドな味わいとトマトソースの相性は抜群、さらにチーズをトッピングし風味豊かに仕上げました。" },
+    { name: "moana", label: "モアナ", imgSrc: "モアナ画像_from disneu.co.jp:fc:moana.jpeg", info: "香りを立たせ、持続させるニッスイの独自技術「香りのＷアップ製法」で、しょうゆの風味と香りをより引き立たせました。\nたまりしょうゆと二段仕込みしょうゆをブレンドした、まろやかでコクのあるしょうゆの風味豊かな焼きおにぎりです。" },
+    { name: "reitou_udon", label: "冷凍", imgSrc: "7116302.jpg", info: "強いコシと弾力のさぬきうどんに、瀬戸内産いりこを使用しただし香るまろやかでコクのあるつゆ。麺はこだわりの包丁切りで、つゆとの絡みも良くお召し上がりいただけます。" },
+    { name: "reitou_pasta", label: "冷凍パスタ", imgSrc: "op_bolognese.jpg", info: "牛挽肉の旨みと赤ワインの風味が特長のボロネーゼソース。ゴーダチーズとごろっと大きな揚げなすをトッピング。" },
+    { name: "karaage", label: "鶏のから揚げ", imgSrc: "65a665121d4b5.png", info: "食欲を満たす肉の塊、これぞから揚げの金字塔！\nにんにく風味アップでさらに白飯がガツガツ進む！\n秘伝にんにく油、葱油、特級醤油の極旨仕込みだれにじっくり漬け込んだ香りがクセになるから揚げです。\n火入れの温度にこだわった”秘伝にんにく油”でにんにくの香りが引き立ち、肉汁がジュワッと広がります。" }
+];
 
 function getCurrentTimestamp() {
     if (!experimentData.startTime) return 0;
@@ -132,16 +135,6 @@ function displayFoodDetails(food) {
     if (foodContainers[food.name]) foodContainers[food.name].classList.add('selected-food-item');
 }
 
-if (goToFeedbackBtn) {
-goToFeedbackBtn.addEventListener('click', () => {
-const hasMeatpie = experimentData.clusters.some(
-c => (c.items || []).some(it => [it.name](http://it.name/) === MEATPIE_ID)
-);
-if (!hasMeatpie) {
-alert('ミートパイを含むクラスターを1つ以上作成してください。');
-return;
-}
-  
 function resetScreen3UI() {
     if (canvasContainer) {
         canvasContainer.querySelectorAll('.food-container').forEach(fc => fc.remove());
@@ -154,7 +147,7 @@ function resetScreen3UI() {
     drawAllClusters();
 
     if (detailsPanel) {
-        detailsPanel.innerHTML = `<h3 id="details-food-name"></h3><img id="details-food-image" src="" alt="選択されたプリンセスの画像" style="display:none;"><div id="details-food-info"></div><p id="details-placeholder" class="info-text" style="display:block;">食品の[i]ボタンをクリックすると、ここに詳細情報が表示されます。</p>`;
+        detailsPanel.innerHTML = `<h3 id="details-food-name"></h3><img id="details-food-image" src="" alt="選択された食品の画像" style="display:none;"><div id="details-food-info"></div><p id="details-placeholder" class="info-text" style="display:block;">食品の[i]ボタンをクリックすると、ここに詳細情報が表示されます。</p>`;
     }
     if (statusMessage) updateStatusMessage("");
     if (finishPlacementBtn) finishPlacementBtn.style.display = 'none';
@@ -245,6 +238,15 @@ function initializeApp() {
         });
     }
 
+    if (goToFeedbackBtn) {
+        goToFeedbackBtn.addEventListener('click', () => {
+            const hasMeatpie = experimentData.clusters.some(
+                c => (c.items || []).some(it => it.name === MEATPIE_ID)
+            );
+            if (!hasMeatpie) {
+                alert('ミートパイを含むクラスターを1つ以上作成してください。');
+                return;
+            }
             document.body.classList.add('feedback-mode-active'); // ★ この行を追加
             currentMode = 'clusterFeedback';
             removeActiveDeleteButton();
@@ -293,7 +295,7 @@ detailsPanel.appendChild(infoHeader);
                     formContainer.innerHTML = `
                         <h4>${cluster.name}${itemsText}</h4>
                         <label for="reasonCreated">このクラスターを作成した理由:</label>
-                        <textarea id="reasonCreated" rows="3" placeholder="例：これらは「見た目」という点で似ていると感じたため。">${cluster.feedback?.reasonCreated || ''}</textarea>
+                        <textarea id="reasonCreated" rows="3" placeholder="例：これらは「洋食」という点で似ていると感じたため。">${cluster.feedback?.reasonCreated || ''}</textarea>
                         <label for="meaning">どのような意味があると思いますか？:</label>
                         <textarea id="meaning" rows="3" placeholder="例：このグループは「子どもが好きな夕食メニュー」と言えるかもしれません。">${cluster.feedback?.meaning || ''}</textarea>
                         <label for="reasonName">その名前にした理由:</label>
@@ -1185,4 +1187,3 @@ function updateStatusMessage(message) {
 }
 
 document.addEventListener('DOMContentLoaded', initializeApp);
-document.addEventListener("DOMContentLoaded", initializeApp);
