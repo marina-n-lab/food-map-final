@@ -19,7 +19,7 @@ function getFoodRectAndCenter(el, container) {
 function circleRectOverlapRatio(cx, cy, radius, rect, samplesPerSide = 20) {
   let inside = 0;
   const total = samplesPerSide * samplesPerSide;
-  for (let i = 0; i < samplesPerSide; i++) {
+  for (let i = 0; i < samplesPerSide; i++) {　
     for (let j = 0; j < samplesPerSide; j++) {
       const x = rect.left + (i + 0.5) * (rect.width  / samplesPerSide);
       const y = rect.top  + (j + 0.5) * (rect.height / samplesPerSide);
