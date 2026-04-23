@@ -251,10 +251,7 @@ function initializeApp() {
                 console.error("[CRITICAL_ERROR] detailsPanel not found!");
                 return;
             }
-     if (!hasMeatpie) {
-                alert('ミートパイを含むクラスターを1つ以上作成してください。');
-                return;
-            }
+    
             detailsPanel.innerHTML = ''; // パネルをクリア
 const infoHeader = document.createElement('p');
 infoHeader.className = 'info-text';
