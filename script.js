@@ -241,7 +241,10 @@ function initializeApp() {
             const hasMeatpie = experimentData.clusters.some(
                 c => (c.items || []).some(it => it.name === MEATPIE_ID)
             );
-           
+            if (!hasMeatpie) {
+                alert('ミートパイを含むクラスターを1つ以上作成してください。');
+                return;
+            }
             document.body.classList.add('feedback-mode-active'); // ★ この行を追加
             currentMode = 'clusterFeedback';
             removeActiveDeleteButton();
