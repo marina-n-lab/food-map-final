@@ -1114,53 +1114,7 @@ function removeActiveDeleteButton() {
 }
 
 function drawAxes() {
-    if (!ctx || !clusterCanvas) return;
-    const W = clusterCanvas.width;
-    const H = clusterCanvas.height;
-    const cx = Math.round(W / 2);
-    const cy = Math.round(H / 2);
-    const MARGIN = 48;
-    const LABEL_OFFSET = 10;
 
-    ctx.save();
-    ctx.strokeStyle = '#000000';
-    ctx.lineWidth = 1.5;
-
-    // X軸（横線）
-    ctx.beginPath();
-    ctx.moveTo(MARGIN, cy);
-    ctx.lineTo(W - MARGIN, cy);
-    ctx.stroke();
-
-    // Y軸（縦線）
-    ctx.beginPath();
-    ctx.moveTo(cx, MARGIN);
-    ctx.lineTo(cx, H - MARGIN);
-    ctx.stroke();
-
-    ctx.fillStyle = '#000000';
-    ctx.font = 'bold 13px sans-serif';
-
-    // 右ラベル：友
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('友', W - MARGIN + LABEL_OFFSET, cy);
-
-    // 左ラベル：恋
-    ctx.textAlign = 'right';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('恋', MARGIN - LABEL_OFFSET, cy);
-
-    // 上ラベル：主
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'bottom';
-    ctx.fillText('主', cx, MARGIN - LABEL_OFFSET);
-
-    // 下ラベル：能
-    ctx.textBaseline = 'top';
-    ctx.fillText('能', cx, H - MARGIN + LABEL_OFFSET);
-
-    ctx.restore();
 }
 
 function drawCircle(centerX, centerY, radius, strokeStyle, fillStyle, lineWidth, isFilled = true) {
