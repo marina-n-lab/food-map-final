@@ -604,14 +604,12 @@ function initializeApp() {
                             console.warn('[WARNING] fetch failed but probably sent successfully:', error);
                         } finally {
                             showScreen(screen5);
-                            updateStepper(5);
                             showLoading(false);
                         }
                     });
                 }
             }
             showScreen(screen4);
-            updateStepper(4);
         });
     }
 
