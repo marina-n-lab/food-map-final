@@ -58,15 +58,15 @@ let selectedClusterIndexForDeletion = -1;
 
 // プリンセス一覧（旧 foodList）
 let princessList = [
-    { name: "aurora",      label: "オーロラ姫",   imgSrc: "aurora_738f085c.jpeg",                             info: "" },
-    { name: "annaandelsa", label: "アナとエルサ", imgSrc: "IMG_9781.JPG",                                     info: "" },
-    { name: "rapunzel",    label: "ラプンツェル", imgSrc: "rapunzel_8f01586c.jpeg",                           info: "" },
-    { name: "snow_white",  label: "白雪姫",       imgSrc: "snow_white_37217e1f.jpeg",                         info: "" },
-    { name: "jasmine",     label: "ジャスミン",   imgSrc: "1280x1280.webp",                                   info: "" },
-    { name: "belle",       label: "ベル",         imgSrc: "belle_a0c06a3b.jpeg",                              info: "" },
-    { name: "cinderella",  label: "シンデレラ",   imgSrc: "シンデレラ.jpeg",                                  info: "" },
-    { name: "moana",       label: "モアナ",       imgSrc: "モアナ画像_from disneu.co.jp:fc:moana.jpeg",      info: "" },
-    { name: "ariel",       label: "アリエル",     imgSrc: "ariel_fc_little-mermaid_t_c2b937fa.jpeg",         info: "" },
+    { name: "aurora",      label: "オーロラ姫",   imgSrc: "aurora_738f085c.jpeg",                             info: "眠れる森の美女" },
+    { name: "annaandelsa", label: "アナとエルサ", imgSrc: "IMG_9781.JPG",                                     info: "アナと雪の女王" },
+    { name: "rapunzel",    label: "ラプンツェル", imgSrc: "rapunzel_8f01586c.jpeg",                           info: "塔の上のラプンツェル" },
+    { name: "snow_white",  label: "白雪姫",       imgSrc: "snow_white_37217e1f.jpeg",                         info: "白雪姫" },
+    { name: "jasmine",     label: "ジャスミン",   imgSrc: "1280x1280.webp",                                   info: "アラジン" },
+    { name: "belle",       label: "ベル",         imgSrc: "belle_a0c06a3b.jpeg",                              info: "美女と野獣" },
+    { name: "cinderella",  label: "シンデレラ",   imgSrc: "シンデレラ.jpeg",                                  info: "シンデレラ" },
+    { name: "moana",       label: "モアナ",       imgSrc: "モアナ画像_from disneu.co.jp:fc:moana.jpeg",      info: "モアナと伝説の海" },
+    { name: "ariel",       label: "アリエル",     imgSrc: "ariel_fc_little-mermaid_t_c2b937fa.jpeg",         info: "リトル・マーメイド" },
 ];
 
 // 後方互換エイリアス（内部コードで foodList を参照している箇所のため）
