@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>自由配置型食品認知マップ研究</title>
+    <title>自由配置型プリンセス認知マップ研究</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -20,7 +20,7 @@
 
         <div id="screen2" class="screen">
             <h2>実験のやり方・注意事項</h2>
-            <p>この実験では、様々な<strong>プリンセスの画像</strong>を画面に表示します。この白い画面は、あなたの<strong>「頭の中」や「思考のテーブル」</strong>だと思ってください。ドラッグ＆ドロップでプリンセスを動かすことは、机の上でカードを整理しながら、考えをまとめる作業と同じです。</p>
+            <p>この実験では、様々な<strong>ディズニープリンセスの画像</strong>を画面に表示します。この画面は、あなたの<strong>「頭の中」や「思考のテーブル」</strong>だと思ってください。ドラッグ＆ドロップでプリンセスを動かすことは、机の上でカードを整理しながら、考えをまとめる作業と同じです。</p>
             <p>画面上の<strong>「距離」</strong>は、あなたの頭の中にある<strong>「関係性の強さ」</strong>を表します。あなただけの<strong>「頭の中の地図」</strong>を作るつもりで、楽しんで配置してみてください。</p>
             <div class="instructions-layout">
                 <div class="instructions-text">
@@ -34,11 +34,11 @@
                                 <li>２つのクラスターに属するプリンセスがあってもかまいません。その場合は、2つの円が重なる位置に配置してください。</li>
                                 <li>少しでも円にプリンセスが触れていたら、クラスターの1つとして認識されます。</li>
                             </ul>
-                            「関係性」に正解はありません。例えば、「格好が近い」「似たような性格をしている」「作品中の立ち振る舞いが類似している」といった、あなたが直感で感じる<strong>「つながり」</strong>を自由に表現してください。各プリンセスの上にある<strong>丸い[i]ボタン</strong>をクリックすると、その食品の情報を右側のパネルで確認できます。
+                            「関係性」に正解はありません。例えば、「衣装が似ている」「似たような性格をしている」「物語の展開が類似している」といった、あなたが直感で感じる<strong>「つながり」</strong>を自由に表現してください。各プリンセスの上にある<strong>丸い[i]ボタン</strong>をクリックすると、そのプリンセスの情報を右側のパネルで確認できます。
                         </li>
                         <li>
                             <strong>クラスター作成フェーズ</strong>: 
-                            全てのプリンセスを配置し終えたら、「配置を確定する」ボタンを押してください。その後、<strong>マウスで3つ以上のプリンセスを円で囲む</strong>ことでクラスター（グループ）を作成できます。
+                            全てのプリンセスを配置し終えたら、「配置を確定する」ボタンを押してください。その後、<strong>マウスで3人以上のプリンセスを円で囲む</strong>ことでクラスター（グループ）を作成できます。
                         </li>
                         <li>
                             <strong>フィードバックフェーズ</strong>: 
@@ -48,28 +48,28 @@
                 </div>
                 <div class="instructions-example">
                     <p><strong>【操作の例】</strong></p>
-    
-    <p>食品の配置（ドラッグ＆ドロップ）</p>
-    <video autoplay loop muted playsinline width="100%" style="border: 1px solid #ccc; border-radius: 8px; margin-bottom: 15px;">
-        <source src="placement-demo.mp4" type="video/mp4">
-        お使いのブラウザは動画の表示に対応していません。
-    </video>
-    
-    <p>グループの作成（円で囲む）</p>
-    <video autoplay loop muted playsinline width="100%" style="border: 1px solid #ccc; border-radius: 8px;">
-        <source src="clustering-demo.mp4" type="video/mp4">
-        お使いのブラウザは動画の表示に対応していません。
-    </video>
+
+                    <p>プリンセスの配置（ドラッグ＆ドロップ）</p>
+                    <video autoplay loop muted playsinline width="100%" style="border: 1px solid #ccc; border-radius: 8px; margin-bottom: 15px;">
+                        <source src="placement-demo.mp4" type="video/mp4">
+                        お使いのブラウザは動画の表示に対応していません。
+                    </video>
+
+                    <p>グループの作成（円で囲む）</p>
+                    <video autoplay loop muted playsinline width="100%" style="border: 1px solid #ccc; border-radius: 8px;">
+                        <source src="clustering-demo.mp4" type="video/mp4">
+                        お使いのブラウザは動画の表示に対応していません。
+                    </video>
                 </div>
             </div>
             <p>操作に関する不明点があれば、研究者に確認してください。それでは、準備ができたら「実験開始」ボタンを押してください。</p>
             <button id="startExperimentBtn">実験開始</button>
-            <button id="backToScreen1Btn" class="back-button">前の画面に戻る</button> 
+            <button id="backToScreen1Btn" class="back-button">前の画面に戻る</button>
         </div>
 
-<div id="screen3" class="screen">
-            <h1>自由配置型食品認知マップ</h1>
-            <p class="info-text" id="statusMessage"></p> 
+        <div id="screen3" class="screen">
+            <h1>自由配置型プリンセス認知マップ</h1>
+            <p class="info-text" id="statusMessage"></p>
 
             <div class="experiment-layout-container">
                 <div class="canvas-area">
@@ -85,17 +85,17 @@
                 </div>
             </div>
             <div class="button-controls">
-                <button id="backToScreen2Btn" class="back-button">前の画面に戻る</button> 
+                <button id="backToScreen2Btn" class="back-button">前の画面に戻る</button>
                 <button id="finishPlacementBtn">配置を確定する</button>
                 <button id="goToFeedbackBtn" style="display:none;">クラスターレビューへ進む</button>
                 <button id="saveFeedbackAndDataBtn" style="display:none;">全てのフィードバックを記入し次へ進む</button>
             </div>
             <div class="spinner" id="loadingSpinner"></div>
-            </div>
+        </div>
 
         <div id="screen4" class="screen">
             <h2>アンケートにご協力ください</h2>
-            <p>実験の体験や、あなたの普段の食生活についてお伺いします。</p>
+            <p>実験の体験や、ディズニープリンセスについてお伺いします。</p>
             <form id="surveyForm" class="survey-container">
                 <button id="submitAndFinishBtn" type="submit">アンケートを回答し、データを送信する</button>
             </form>
@@ -109,6 +109,6 @@
         </div>
     </div>
 
-    <script src="script.js?v=12"></script>
+    <script src="princess_experiment.js"></script>
 </body>
 </html>
