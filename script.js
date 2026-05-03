@@ -731,7 +731,6 @@ function initializeExperiment() {
         clusterCanvas.height = canvasContainer.clientHeight;
         ctx.clearRect(0, 0, clusterCanvas.width, clusterCanvas.height);
         drawAxes();
-        drawAxes();
 
         experimentData.startTime = Date.now();
         experimentData.moveHistory = [];
