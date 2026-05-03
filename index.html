@@ -9,6 +9,7 @@
 </head>
 <body>
     <div id="app" class="screen-container">
+
         <div id="screen1" class="screen">
             <h2>被験者情報を入力してください</h2>
             <input id="subjectName" type="text" placeholder="お名前" required autocomplete="name">
@@ -34,11 +35,11 @@
                                 <li>２つのクラスターに属するプリンセスがあってもかまいません。その場合は、2つの円が重なる位置に配置してください。</li>
                                 <li>少しでも円にプリンセスが触れていたら、クラスターの1つとして認識されます。</li>
                             </ul>
-                            「関係性」に正解はありません。例えば、「格好が近い」「似たような性格をしている」「作品中の立ち振る舞いが類似している」といった、あなたが直感で感じる<strong>「つながり」</strong>を自由に表現してください。各プリンセスの上にある<strong>丸い[i]ボタン</strong>をクリックすると、その食品の情報を右側のパネルで確認できます。
+                            「関係性」に正解はありません。例えば、「格好が近い」「似たような性格をしている」「作品中の立ち振る舞いが類似している」といった、あなたが直感で感じる<strong>「つながり」</strong>を自由に表現してください。各プリンセスの上にある<strong>丸い[i]ボタン</strong>をクリックすると、そのプリンセスの情報を右側のパネルで確認できます。
                         </li>
                         <li>
                             <strong>クラスター作成フェーズ</strong>: 
-                            全てのプリンセスを配置し終えたら、「配置を確定する」ボタンを押してください。その後、<strong>マウスで3つ以上のプリンセスを円で囲む</strong>ことでクラスター（グループ）を作成できます。
+                            全てのプリンセスを配置し終えたら、「配置を確定する」ボタンを押してください。その後、<strong>マウスで3人以上のプリンセスを円で囲む</strong>ことでクラスター（グループ）を作成できます。
                         </li>
                         <li>
                             <strong>フィードバックフェーズ</strong>: 
@@ -48,34 +49,42 @@
                 </div>
                 <div class="instructions-example">
                     <p><strong>【操作の例】</strong></p>
-    
-    <p>食品の配置（ドラッグ＆ドロップ）</p>
-    <video autoplay loop muted playsinline width="100%" style="border: 1px solid #ccc; border-radius: 8px; margin-bottom: 15px;">
-        <source src="placement-demo.mp4" type="video/mp4">
-        お使いのブラウザは動画の表示に対応していません。
-    </video>
-    
-    <p>グループの作成（円で囲む）</p>
-    <video autoplay loop muted playsinline width="100%" style="border: 1px solid #ccc; border-radius: 8px;">
-        <source src="clustering-demo.mp4" type="video/mp4">
-        お使いのブラウザは動画の表示に対応していません。
-    </video>
+                    <p>プリンセスの配置（ドラッグ＆ドロップ）</p>
+                    <video autoplay loop muted playsinline width="100%" style="border: 1px solid #ccc; border-radius: 8px; margin-bottom: 15px;">
+                        <source src="placement-demo.mp4" type="video/mp4">
+                        お使いのブラウザは動画の表示に対応していません。
+                    </video>
+                    <p>グループの作成（円で囲む）</p>
+                    <video autoplay loop muted playsinline width="100%" style="border: 1px solid #ccc; border-radius: 8px;">
+                        <source src="clustering-demo.mp4" type="video/mp4">
+                        お使いのブラウザは動画の表示に対応していません。
+                    </video>
                 </div>
             </div>
             <p>操作に関する不明点があれば、研究者に確認してください。それでは、準備ができたら「実験開始」ボタンを押してください。</p>
             <button id="startExperimentBtn">実験開始</button>
-            <button id="backToScreen1Btn" class="back-button">前の画面に戻る</button> 
+            <button id="backToScreen1Btn" class="back-button">前の画面に戻る</button>
         </div>
 
-<div id="screen3" class="screen">
+        <div id="screen3" class="screen">
             <h1>ならべ〜る　プリンセス研究</h1>
-            <p class="info-text" id="statusMessage"></p> 
+            <p class="info-text" id="statusMessage"></p>
 
             <div class="experiment-layout-container">
                 <div class="canvas-area">
-                    <div id="canvas-container">
+                    <div id="canvas-container" style="position:relative;">
                         <canvas id="clusterCanvas"></canvas>
-                    </div>　　　
+                        <!-- 軸オーバーレイ（pointer-events:none で操作を邪魔しない） -->
+                        <svg id="axisOverlay"
+                             style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:visible;">
+                            <line x1="3%" y1="50%" x2="97%" y2="50%" stroke="black" stroke-width="1.5"/>
+                            <line x1="50%" y1="3%" x2="50%" y2="97%" stroke="black" stroke-width="1.5"/>
+                            <text x="98%"  y="50%" dominant-baseline="middle"  text-anchor="start"  font-size="14" font-weight="bold" fill="black">友</text>
+                            <text x="2%"   y="50%" dominant-baseline="middle"  text-anchor="end"    font-size="14" font-weight="bold" fill="black">恋</text>
+                            <text x="50%"  y="2%"  dominant-baseline="auto"    text-anchor="middle" font-size="14" font-weight="bold" fill="black">主</text>
+                            <text x="50%"  y="98%" dominant-baseline="hanging" text-anchor="middle" font-size="14" font-weight="bold" fill="black">能</text>
+                        </svg>
+                    </div>
                 </div>
                 <div id="details-panel" class="details-area">
                     <h3 id="details-food-name"></h3>
@@ -85,13 +94,13 @@
                 </div>
             </div>
             <div class="button-controls">
-                <button id="backToScreen2Btn" class="back-button">前の画面に戻る</button> 
+                <button id="backToScreen2Btn" class="back-button">前の画面に戻る</button>
                 <button id="finishPlacementBtn">配置を確定する</button>
                 <button id="goToFeedbackBtn" style="display:none;">クラスターレビューへ進む</button>
                 <button id="saveFeedbackAndDataBtn" style="display:none;">全てのフィードバックを記入し次へ進む</button>
             </div>
             <div class="spinner" id="loadingSpinner"></div>
-            </div>
+        </div>
 
         <div id="screen4" class="screen">
             <h2>アンケートにご協力ください</h2>
@@ -107,8 +116,8 @@
             <p class="info-text">この画面を閉じていただいて結構です。</p>
             <button id="backToStartBtn2" class="back-button">最初の画面に戻る</button>
         </div>
-    </div>
 
-    <script src="script.js?v=12"></script>
+    </div>
+    <script src="princess_experiment.js"></script>
 </body>
 </html>
