@@ -149,8 +149,18 @@ function getRandomClusterColor() {
 }
 
 // ===================================================
-// 描画（軸なし）
+// 描画
 // ===================================================
+
+function drawCircle(centerX, centerY, radius, strokeStyle, fillStyle, lineWidth, isFilled) {
+    if (!ctx || radius <= 0) return;
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+    if (strokeStyle) ctx.strokeStyle = strokeStyle;
+    if (lineWidth)   ctx.lineWidth   = lineWidth;
+    ctx.stroke();
+    if (isFilled !== false && fillStyle) { ctx.fillStyle = fillStyle; ctx.fill(); }
+}
 
 function drawAllClusters() {
     if (!ctx || !clusterCanvas) return;
@@ -161,16 +171,6 @@ function drawAllClusters() {
             drawCircle(cluster.centerX, cluster.centerY, cluster.radius, cluster.color, fillColor, 2, true);
         }
     });
-}
-
-function drawCircle(centerX, centerY, radius, strokeStyle, fillStyle, lineWidth, isFilled) {
-    if (!ctx || radius <= 0) return;
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-    if (strokeStyle) ctx.strokeStyle = strokeStyle;
-    if (lineWidth)   ctx.lineWidth   = lineWidth;
-    ctx.stroke();
-    if (isFilled !== false && fillStyle) { ctx.fillStyle = fillStyle; ctx.fill(); }
 }
 
 // ===================================================
@@ -499,7 +499,7 @@ function buildSurveyUI() {
         return '<div class="survey-question"><p class="question-text">Q' + num + '. ' + text + '</p>' + inner + '</div>';
     };
     var titles = [
-        '', // 0 (unused)
+        '',
         '眠れる森の美女（オーロラ姫）','アナと雪の女王（アナとエルサ）','塔の上のラプンツェル（ラプンツェル）',
         '白雪姫','アラジン（ジャスミン）','美女と野獣（ベル）',
         'シンデレラ','モアナ','リトル・マーメイド（アリエル）'
@@ -520,22 +520,18 @@ function buildSurveyUI() {
     for (var i = 0; i < 9; i++) {
         qRomance += Q(2 + i, '「' + titles[i+1] + '」の物語の中心は恋愛だと思いますか？', likert5('q' + (2 + i)));
     }
-
     var qFamily = '';
     for (var i = 0; i < 9; i++) {
         qFamily += Q(11 + i, '「' + titles[i+1] + '」の物語の中心は家族／友情だと思いますか？', likert5('q' + (11 + i)));
     }
-
     var qActive = '';
     for (var i = 0; i < 9; i++) {
         qActive += Q(20 + i, '「' + pnames[i+1] + '」の性格は、主体的に行動するタイプだと思いますか？', likert5('q' + (20 + i)));
     }
-
     var qPassive = '';
     for (var i = 0; i < 9; i++) {
         qPassive += Q(29 + i, '「' + pnames[i+1] + '」の性格は、受動的に行動するタイプだと思いますか？', likert5('q' + (29 + i)));
     }
-
     var qValues =
         Q(38, '「プリンセスらしさとは『美しさ』である。」', likert5('q38')) +
         Q(39, '「プリンセスらしさとは『勇敢』である。」', likert5('q39')) +
@@ -578,30 +574,24 @@ function buildSurveyUI() {
         '<fieldset class="survey-section"><legend>前提知識</legend>' +
         Q(1, '実験の前にストーリーを知っていた作品を全て選んでください。（複数選択可）', q1html) +
         '</fieldset>' +
-
         '<fieldset class="survey-section"><legend>X軸：画一的⇔多様性 ― 物語の中心テーマ</legend>' +
         qRomance + qFamily +
         '</fieldset>' +
-
         '<fieldset class="survey-section"><legend>Y軸：主体的⇔受動的 ― プリンセスの行動傾向</legend>' +
         qActive + qPassive +
         '</fieldset>' +
-
         '<fieldset class="survey-section"><legend>価値観形成：X軸（プリンセスらしさの定義）</legend>' +
         qValues +
         '</fieldset>' +
-
         '<fieldset class="survey-section"><legend>価値観形成：Y軸（理想のプリンセスと理由）</legend>' +
         Q(43, 'あなたにとっての理想のプリンセスは誰ですか？（1人選択）', q43html) +
         qReason +
         '</fieldset>' +
-
         '<fieldset class="survey-section"><legend>遊びの質問</legend>' +
         Q(46, '実験は楽しかったですか？', q46html) +
         Q(47, '子供に特に見せたいプリンセスの物語はどれですか？（1つ選択）', q47html) +
         Q(48, 'あなたが行ったグループ分けの基準はなんでしたか？（複数選択可）', q48html) +
         '</fieldset>' +
-
         '<button id="submitAndFinishBtn" type="submit">アンケートを回答し、データを送信する</button>';
 
     document.getElementById('submitAndFinishBtn').addEventListener('click', function(e) {
@@ -675,9 +665,9 @@ function initializeApp() {
 
     if (goToScreen2Btn) {
         goToScreen2Btn.addEventListener('click', function() {
-            var name  = subjectNameInput.value.trim();
+            var name   = subjectNameInput.value.trim();
             var ageStr = subjectAgeInput.value.trim();
-            var email = subjectEmailInput.value.trim();
+            var email  = subjectEmailInput.value.trim();
             if (!name || !ageStr || !email) { alert('全ての項目を入力してください。'); return; }
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('有効なメールアドレスを入力してください。'); return; }
             var age = parseInt(ageStr, 10);
