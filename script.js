@@ -481,14 +481,34 @@ function buildClusterFeedbackUI() {
         formContainer.innerHTML =
             '<h4>' + cluster.name + (labels ? ' (内容: ' + labels + ')' : '') + '</h4>' +
             '<label for="reasonCreated">このクラスターを作成した理由:</label>' +
-            '<textarea id="reasonCreated" rows="3" placeholder="例：これらは「勇気がある」という点で似ていると感じたため。">' + (cluster.feedback && cluster.feedback.reasonCreated ? cluster.feedback.reasonCreated : '') + '</textarea>' +
+            '<span id="count_reasonCreated" style="font-size:12px;color:#888;float:right;">残り200字</span>' +
+            '<textarea id="reasonCreated" rows="3" maxlength="200" placeholder="例：これらは「勇気がある」という点で似ていると感じたため。">' + (cluster.feedback && cluster.feedback.reasonCreated ? cluster.feedback.reasonCreated : '') + '</textarea>' +
             '<label for="meaning">どのような意味があると思いますか？:</label>' +
-            '<textarea id="meaning" rows="3" placeholder="例：このグループは「自分の意志で行動するプリンセス」と言えるかもしれません。">' + (cluster.feedback && cluster.feedback.meaning ? cluster.feedback.meaning : '') + '</textarea>' +
+            '<span id="count_meaning" style="font-size:12px;color:#888;float:right;">残り200字</span>' +
+            '<textarea id="meaning" rows="3" maxlength="200" placeholder="例：このグループは「自分の意志で行動するプリンセス」と言えるかもしれません。">' + (cluster.feedback && cluster.feedback.meaning ? cluster.feedback.meaning : '') + '</textarea>' +
             '<label for="reasonName">その名前にした理由:</label>' +
-            '<textarea id="reasonName" rows="3" placeholder="例：グループの特徴をそのまま名前にしました。">' + (cluster.feedback && cluster.feedback.reasonName ? cluster.feedback.reasonName : '') + '</textarea>';
-        formContainer.querySelector('#reasonCreated').addEventListener('input', function(e) { if (!cluster.feedback) cluster.feedback = {}; cluster.feedback.reasonCreated = e.target.value; });
-        formContainer.querySelector('#meaning').addEventListener('input',       function(e) { if (!cluster.feedback) cluster.feedback = {}; cluster.feedback.meaning       = e.target.value; });
-        formContainer.querySelector('#reasonName').addEventListener('input',    function(e) { if (!cluster.feedback) cluster.feedback = {}; cluster.feedback.reasonName    = e.target.value; });
+            '<span id="count_reasonName" style="font-size:12px;color:#888;float:right;">残り200字</span>' +
+            '<textarea id="reasonName" rows="3" maxlength="200" placeholder="例：グループの特徴をそのまま名前にしました。">' + (cluster.feedback && cluster.feedback.reasonName ? cluster.feedback.reasonName : '') + '</textarea>';
+        function updateCounter(textareaId, counterId) {
+            var ta = formContainer.querySelector('#' + textareaId);
+            var ct = formContainer.querySelector('#' + counterId);
+            if (ta && ct) ct.textContent = '残り' + (200 - ta.value.length) + '字';
+        }
+        formContainer.querySelector('#reasonCreated').addEventListener('input', function(e) {
+            if (!cluster.feedback) cluster.feedback = {};
+            cluster.feedback.reasonCreated = e.target.value;
+            updateCounter('reasonCreated', 'count_reasonCreated');
+        });
+        formContainer.querySelector('#meaning').addEventListener('input', function(e) {
+            if (!cluster.feedback) cluster.feedback = {};
+            cluster.feedback.meaning = e.target.value;
+            updateCounter('meaning', 'count_meaning');
+        });
+        formContainer.querySelector('#reasonName').addEventListener('input', function(e) {
+            if (!cluster.feedback) cluster.feedback = {};
+            cluster.feedback.reasonName = e.target.value;
+            updateCounter('reasonName', 'count_reasonName');
+        });
     }
 
     experimentData.clusters.forEach(function(cluster, index) {
