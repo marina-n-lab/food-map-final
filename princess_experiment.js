@@ -34,7 +34,7 @@ let princessList = [
     { name: "snow_white",  label: "白雪姫",       imgSrc: "snow_white_37217e1f.jpeg",                    info: "" },
     { name: "jasmine",     label: "ジャスミン",   imgSrc: "1280x1280.webp",                              info: "" },
     { name: "belle",       label: "ベル",         imgSrc: "belle_a0c06a3b.jpeg",                         info: "" },
-    { name: "cinderella",  label: "シンデレラ",   imgSrc: "シンデレラ.jpeg",                             info: "" },
+    { name: "cinderella",  label: "シンデレラ",   imgSrc: "シンデレラ.jpeg",                             info: "" },
     { name: "moana",       label: "モアナ",       imgSrc: "モアナ画像_from disneu.co.jp:fc:moana.jpeg", info: "" },
     { name: "ariel",       label: "アリエル",     imgSrc: "ariel_fc_little-mermaid_t_c2b937fa.jpeg",    info: "" },
 ];
