@@ -310,8 +310,8 @@ function handleClusterMouseUp() {
         currentDrawingCluster = null; ctx.clearRect(0, 0, clusterCanvas.width, clusterCanvas.height); drawAllClusters(); return;
     }
     identifyItemsInCluster(currentDrawingCluster);
-    if (currentDrawingCluster.items.length < 3) {
-        updateStatusMessage('クラスター内のプリンセスが' + currentDrawingCluster.items.length + '人です。3人以上になるように作成してください。');
+    if (currentDrawingCluster.items.length < 2) {
+        updateStatusMessage('クラスター内のプリンセスが' + currentDrawingCluster.items.length + '人です。2人以上になるように作成してください。');
         currentDrawingCluster = null; ctx.clearRect(0, 0, clusterCanvas.width, clusterCanvas.height); drawAllClusters(); return;
     }
     var itemsLabel = currentDrawingCluster.items.map(function(item) {
@@ -696,7 +696,7 @@ function initializeApp() {
             clusterCanvas.classList.add('active-drawing');
             finishPlacementBtn.style.display = 'none';
             goToFeedbackBtn.style.display    = 'inline-block';
-            updateStatusMessage('プリンセスを円で囲んでクラスターを作成（3人以上）、または既存クラスターをクリックして削除できます。');
+            updateStatusMessage('プリンセスを円で囲んでクラスターを作成（2人以上）、または既存クラスターをクリックして削除できます。');
         });
     }
 
