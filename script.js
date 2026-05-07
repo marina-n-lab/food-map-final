@@ -1,10 +1,8 @@
 // ===== プリンセス認知マップ 実験スクリプト =====
 
-// === 定数 ===
 const RING_PADDING = 30;
 const MIN_GAP = 12;
 
-// === DOM キャッシュ ===
 let appContainer, screen1, screen2, screen3, screen4, screen5,
     subjectNameInput, subjectAgeInput, subjectEmailInput,
     goToScreen2Btn, startExperimentBtn,
@@ -13,7 +11,6 @@ let appContainer, screen1, screen2, screen3, screen4, screen5,
     loadingSpinner, statusMessage, detailsPanel,
     backToScreen1Btn, backToScreen2Btn, backToStartBtn2;
 
-// === グローバル変数 ===
 let experimentData = {
     subjectInfo: {}, positions: [], clusters: [],
     placementTime: null, moveHistory: [], relations: []
@@ -26,7 +23,6 @@ let currentDrawingCluster = null;
 let activeDeleteButton = null;
 let selectedClusterIndexForDeletion = -1;
 
-// === プリンセス一覧 ===
 let princessList = [
     { name: "aurora",      label: "オーロラ姫",   imgSrc: "aurora_738f085c.jpeg",                        info: "眠れる森の美女" },
     { name: "annaandelsa", label: "アナとエルサ", imgSrc: "IMG_9781.JPG",                                info: "アナと雪の女王" },
@@ -49,24 +45,24 @@ function getCurrentTimestamp() {
 }
 
 function getFoodRectAndCenter(el, container) {
-    const cRect = container.getBoundingClientRect();
-    const r = el.getBoundingClientRect();
-    const left = r.left - cRect.left;
-    const top  = r.top  - cRect.top;
-    const width = r.width;
-    const height = r.height;
-    return { left, top, width, height, centerX: left + width / 2, centerY: top + height / 2 };
+    var cRect = container.getBoundingClientRect();
+    var r = el.getBoundingClientRect();
+    var left = r.left - cRect.left;
+    var top  = r.top  - cRect.top;
+    var width = r.width;
+    var height = r.height;
+    return { left: left, top: top, width: width, height: height, centerX: left + width / 2, centerY: top + height / 2 };
 }
 
 function circleRectOverlapRatio(cx, cy, radius, rect, samplesPerSide) {
     samplesPerSide = samplesPerSide || 20;
-    let inside = 0;
-    const total = samplesPerSide * samplesPerSide;
-    for (let i = 0; i < samplesPerSide; i++) {
-        for (let j = 0; j < samplesPerSide; j++) {
-            const x = rect.left + (i + 0.5) * (rect.width  / samplesPerSide);
-            const y = rect.top  + (j + 0.5) * (rect.height / samplesPerSide);
-            const dx = x - cx, dy = y - cy;
+    var inside = 0;
+    var total = samplesPerSide * samplesPerSide;
+    for (var i = 0; i < samplesPerSide; i++) {
+        for (var j = 0; j < samplesPerSide; j++) {
+            var x = rect.left + (i + 0.5) * (rect.width  / samplesPerSide);
+            var y = rect.top  + (j + 0.5) * (rect.height / samplesPerSide);
+            var dx = x - cx, dy = y - cy;
             if (dx * dx + dy * dy <= radius * radius) inside++;
         }
     }
@@ -74,11 +70,11 @@ function circleRectOverlapRatio(cx, cy, radius, rect, samplesPerSide) {
 }
 
 function waitImagesLoaded(rootEl) {
-    const imgs = Array.from(rootEl.querySelectorAll('img'));
+    var imgs = Array.from(rootEl.querySelectorAll('img'));
     if (imgs.length === 0) return Promise.resolve();
-    let done = 0;
+    var done = 0;
     return new Promise(function(res) {
-        const check = function() { if (++done >= imgs.length) res(); };
+        var check = function() { if (++done >= imgs.length) res(); };
         imgs.forEach(function(img) {
             if (img.complete) check();
             else {
@@ -90,31 +86,31 @@ function waitImagesLoaded(rootEl) {
 }
 
 function setCenterPos(el, cx, cy) {
-    const w = el.offsetWidth  || 96;
-    const h = el.offsetHeight || 96;
+    var w = el.offsetWidth  || 96;
+    var h = el.offsetHeight || 96;
     el.style.position = 'absolute';
     el.style.left = Math.round(cx - w / 2) + 'px';
     el.style.top  = Math.round(cy - h / 2) + 'px';
 }
 
 function arrangeInitialLayout(canvas, containersMap) {
-    const W = canvas.clientWidth;
-    const H = canvas.clientHeight;
-    const cx = W / 2, cy = H / 2;
-    const any = Object.values(containersMap)[0];
-    const itemW = any ? (any.offsetWidth  || 96) : 96;
-    const itemH = any ? (any.offsetHeight || 96) : 96;
-    const itemR = Math.max(itemW, itemH) / 2;
-    const ringRadius = Math.max(120, Math.min(W, H) * 0.40 - itemR - RING_PADDING);
-    const names = Object.keys(containersMap);
-    const n = names.length;
+    var W = canvas.clientWidth;
+    var H = canvas.clientHeight;
+    var cx = W / 2, cy = H / 2;
+    var any = Object.values(containersMap)[0];
+    var itemW = any ? (any.offsetWidth  || 96) : 96;
+    var itemH = any ? (any.offsetHeight || 96) : 96;
+    var itemR = Math.max(itemW, itemH) / 2;
+    var ringRadius = Math.max(120, Math.min(W, H) * 0.40 - itemR - RING_PADDING);
+    var names = Object.keys(containersMap);
+    var n = names.length;
     if (n === 0) return;
-    const neededArc = (Math.max(itemW, itemH) + MIN_GAP) / ringRadius;
-    const baseStep  = Math.max((2 * Math.PI) / n, neededArc);
-    let angle = -Math.PI / 2;
+    var neededArc = (Math.max(itemW, itemH) + MIN_GAP) / ringRadius;
+    var baseStep  = Math.max((2 * Math.PI) / n, neededArc);
+    var angle = -Math.PI / 2;
     names.forEach(function(name) {
-        const jitter = (Math.random() - 0.5) * (baseStep * 0.25);
-        const a = angle + jitter;
+        var jitter = (Math.random() - 0.5) * (baseStep * 0.25);
+        var a = angle + jitter;
         setCenterPos(containersMap[name], cx + ringRadius * Math.cos(a), cy + ringRadius * Math.sin(a));
         angle += baseStep;
     });
@@ -142,9 +138,9 @@ function removeActiveDeleteButton() {
 }
 
 function getRandomClusterColor() {
-    const r = Math.floor(Math.random() * 180) + 50;
-    const g = Math.floor(Math.random() * 180) + 50;
-    const b = Math.floor(Math.random() * 180) + 50;
+    var r = Math.floor(Math.random() * 180) + 50;
+    var g = Math.floor(Math.random() * 180) + 50;
+    var b = Math.floor(Math.random() * 180) + 50;
     return 'rgb(' + r + ',' + g + ',' + b + ')';
 }
 
@@ -154,9 +150,9 @@ function getRandomClusterColor() {
 
 function drawAxes() {
     if (!ctx || !clusterCanvas) return;
-    const W = clusterCanvas.width, H = clusterCanvas.height;
-    const cx = Math.round(W / 2), cy = Math.round(H / 2);
-    const MARGIN = 48, LABEL_OFFSET = 10;
+    var W = clusterCanvas.width, H = clusterCanvas.height;
+    var cx = Math.round(W / 2), cy = Math.round(H / 2);
+    var MARGIN = 48, LABEL_OFFSET = 10;
     ctx.save();
     ctx.strokeStyle = '#000000'; ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.moveTo(MARGIN, cy); ctx.lineTo(W - MARGIN, cy); ctx.stroke();
@@ -185,7 +181,7 @@ function drawAllClusters() {
     drawAxes();
     experimentData.clusters.forEach(function(cluster) {
         if (cluster.type === 'circle' && cluster.radius > 0) {
-            const fillColor = cluster.color.replace('rgb(', 'rgba(').replace(')', ', 0.2)');
+            var fillColor = cluster.color.replace('rgb(', 'rgba(').replace(')', ', 0.2)');
             drawCircle(cluster.centerX, cluster.centerY, cluster.radius, cluster.color, fillColor, 2, true);
         }
     });
@@ -196,10 +192,10 @@ function drawAllClusters() {
 // ===================================================
 
 function displayPrincessDetails(princess) {
-    const nameEl        = document.getElementById('details-food-name');
-    const imageEl       = document.getElementById('details-food-image');
-    const infoEl        = document.getElementById('details-food-info');
-    const placeholderEl = document.getElementById('details-placeholder');
+    var nameEl        = document.getElementById('details-food-name');
+    var imageEl       = document.getElementById('details-food-image');
+    var infoEl        = document.getElementById('details-food-info');
+    var placeholderEl = document.getElementById('details-placeholder');
     if (!detailsPanel || !nameEl || !imageEl || !infoEl || !placeholderEl) return;
 
     if (!princess) {
@@ -419,7 +415,7 @@ function initializeExperiment() {
     clusterCanvas.height = canvasContainer.clientHeight;
     ctx.clearRect(0, 0, clusterCanvas.width, clusterCanvas.height); drawAxes();
     experimentData.startTime = Date.now(); experimentData.moveHistory = []; experimentData.clusters = []; experimentData.positions = [];
-    experimentData.meta = { screen: { w: window.innerWidth, h: window.innerHeight }, canvas: { w: clusterCanvas.width, h: clusterCanvas.height }, userAgent: navigator.userAgent, scriptVersion: 'v12-princess' };
+    experimentData.meta = { screen: { w: window.innerWidth, h: window.innerHeight }, canvas: { w: clusterCanvas.width, h: clusterCanvas.height }, userAgent: navigator.userAgent, scriptVersion: 'v13-princess' };
     detailsPanel.innerHTML = '<h3 id="details-food-name"></h3><img id="details-food-image" src="" alt="選択されたプリンセスの画像" style="display:none;"><div id="details-food-info"></div><p id="details-placeholder" class="info-text" style="display:block;">プリンセスの[i]ボタンをクリックすると、ここに詳細情報が表示されます。</p>';
     displayPrincessDetails(null);
     canvasContainer.querySelectorAll('.food-container').forEach(function(fc) { fc.remove(); });
@@ -463,11 +459,26 @@ function initializeExperiment() {
 
 function buildClusterFeedbackUI() {
     detailsPanel.innerHTML = '';
-    var infoHeader = document.createElement('p'); infoHeader.className = 'info-text'; infoHeader.textContent = '作成した各クラスターについて、以下の項目を記入してください。'; detailsPanel.appendChild(infoHeader);
-    if (experimentData.clusters.length === 0) { var p = document.createElement('p'); p.className = 'info-text'; p.textContent = '作成されたクラスターはありません。このまま次へ進んでください。'; detailsPanel.appendChild(p); return; }
+    var infoHeader = document.createElement('p');
+    infoHeader.className = 'info-text';
+    infoHeader.textContent = '作成した各クラスターについて、以下の項目を記入してください。';
+    detailsPanel.appendChild(infoHeader);
 
-    var clusterListContainer = document.createElement('div'); clusterListContainer.className = 'cluster-list'; detailsPanel.appendChild(clusterListContainer);
-    var formContainer = document.createElement('div'); formContainer.className = 'cluster-feedback-form'; detailsPanel.appendChild(formContainer);
+    if (experimentData.clusters.length === 0) {
+        var p = document.createElement('p');
+        p.className = 'info-text';
+        p.textContent = '作成されたクラスターはありません。このまま次へ進んでください。';
+        detailsPanel.appendChild(p);
+        return;
+    }
+
+    var clusterListContainer = document.createElement('div');
+    clusterListContainer.className = 'cluster-list';
+    detailsPanel.appendChild(clusterListContainer);
+
+    var formContainer = document.createElement('div');
+    formContainer.className = 'cluster-feedback-form';
+    detailsPanel.appendChild(formContainer);
 
     function showClusterFeedback(index) {
         clusterListContainer.querySelectorAll('.cluster-list-item').forEach(function(item) { item.classList.remove('active'); });
@@ -478,17 +489,23 @@ function buildClusterFeedbackUI() {
             var p = princessList.find(function(p) { return p.name === item.name; });
             return p ? p.label : item.name;
         }).join('、 ');
+
+        var rcVal = (cluster.feedback && cluster.feedback.reasonCreated) ? cluster.feedback.reasonCreated : '';
+        var meVal = (cluster.feedback && cluster.feedback.meaning)       ? cluster.feedback.meaning       : '';
+        var rnVal = (cluster.feedback && cluster.feedback.reasonName)    ? cluster.feedback.reasonName    : '';
+
         formContainer.innerHTML =
             '<h4>' + cluster.name + (labels ? ' (内容: ' + labels + ')' : '') + '</h4>' +
             '<label for="reasonCreated">このクラスターを作成した理由:</label>' +
-            '<span id="count_reasonCreated" style="font-size:12px;color:#888;float:right;">残り200字</span>' +
-            '<textarea id="reasonCreated" rows="3" maxlength="200" placeholder="例：これらは「勇気がある」という点で似ていると感じたため。">' + (cluster.feedback && cluster.feedback.reasonCreated ? cluster.feedback.reasonCreated : '') + '</textarea>' +
+            '<span id="count_reasonCreated" style="font-size:12px;color:#888;float:right;">残り' + (200 - rcVal.length) + '字</span>' +
+            '<textarea id="reasonCreated" rows="3" maxlength="200" placeholder="例：これらは「勇気がある」という点で似ていると感じたため。">' + rcVal + '</textarea>' +
             '<label for="meaning">どのような意味があると思いますか？:</label>' +
-            '<span id="count_meaning" style="font-size:12px;color:#888;float:right;">残り200字</span>' +
-            '<textarea id="meaning" rows="3" maxlength="200" placeholder="例：このグループは「自分の意志で行動するプリンセス」と言えるかもしれません。">' + (cluster.feedback && cluster.feedback.meaning ? cluster.feedback.meaning : '') + '</textarea>' +
+            '<span id="count_meaning" style="font-size:12px;color:#888;float:right;">残り' + (200 - meVal.length) + '字</span>' +
+            '<textarea id="meaning" rows="3" maxlength="200" placeholder="例：このグループは「自分の意志で行動するプリンセス」と言えるかもしれません。">' + meVal + '</textarea>' +
             '<label for="reasonName">その名前にした理由:</label>' +
-            '<span id="count_reasonName" style="font-size:12px;color:#888;float:right;">残り200字</span>' +
-            '<textarea id="reasonName" rows="3" maxlength="200" placeholder="例：グループの特徴をそのまま名前にしました。">' + (cluster.feedback && cluster.feedback.reasonName ? cluster.feedback.reasonName : '') + '</textarea>';
+            '<span id="count_reasonName" style="font-size:12px;color:#888;float:right;">残り' + (200 - rnVal.length) + '字</span>' +
+            '<textarea id="reasonName" rows="3" maxlength="200" placeholder="例：グループの特徴をそのまま名前にしました。">' + rnVal + '</textarea>';
+
         function updateCounter(textareaId, counterId) {
             var ta = formContainer.querySelector('#' + textareaId);
             var ct = formContainer.querySelector('#' + counterId);
@@ -512,8 +529,12 @@ function buildClusterFeedbackUI() {
     }
 
     experimentData.clusters.forEach(function(cluster, index) {
-        var item = document.createElement('div'); item.className = 'cluster-list-item'; item.textContent = cluster.name; item.dataset.clusterIndex = index;
-        item.addEventListener('click', function() { showClusterFeedback(index); }); clusterListContainer.appendChild(item);
+        var item = document.createElement('div');
+        item.className = 'cluster-list-item';
+        item.textContent = cluster.name;
+        item.dataset.clusterIndex = index;
+        item.addEventListener('click', function() { showClusterFeedback(index); });
+        clusterListContainer.appendChild(item);
     });
     showClusterFeedback(0);
 }
@@ -525,19 +546,9 @@ function buildClusterFeedbackUI() {
 function buildSurveyUI() {
     var form = document.getElementById('surveyForm');
     if (!form) return;
-    var L = function(name, val, label) {
-        return '<label><input type="radio" name="' + name + '" value="' + val + '"' + (val === '1' ? ' required' : '') + '><span>' + label + '</span></label>';
-    };
-    var likert5 = function(name) {
-        return '<div class="likert-scale"><span>まったくそう思わない</span><div class="likert-options">' +
-            L(name,'1','1') + L(name,'2','2') + L(name,'3','3') + L(name,'4','4') + L(name,'5','5') +
-            '</div><span>非常にそう思う</span></div>';
-    };
-    var Q = function(num, text, inner) {
-        return '<div class="survey-question"><p class="question-text">Q' + num + '. ' + text + '</p>' + inner + '</div>';
-    };
+
     var titles = [
-        '', // 0 (unused)
+        '',
         '眠れる森の美女（オーロラ姫）','アナと雪の女王（アナとエルサ）','塔の上のラプンツェル（ラプンツェル）',
         '白雪姫','アラジン（ジャスミン）','美女と野獣（ベル）',
         'シンデレラ','モアナ','リトル・マーメイド（アリエル）'
@@ -548,38 +559,51 @@ function buildSurveyUI() {
     ];
     var vals = ['aurora','annaandelsa','rapunzel','snow_white','jasmine','belle','cinderella','moana','ariel'];
 
-    // Q1 前提知識（複数選択）
+    function likert5(name) {
+        return '<div class="likert-scale"><span>まったくそう思わない</span><div class="likert-options">' +
+            '<label><input type="radio" name="' + name + '" value="1" required><span>1</span></label>' +
+            '<label><input type="radio" name="' + name + '" value="2"><span>2</span></label>' +
+            '<label><input type="radio" name="' + name + '" value="3"><span>3</span></label>' +
+            '<label><input type="radio" name="' + name + '" value="4"><span>4</span></label>' +
+            '<label><input type="radio" name="' + name + '" value="5"><span>5</span></label>' +
+            '</div><span>非常にそう思う</span></div>';
+    }
+    function Q(num, text, inner) {
+        return '<div class="survey-question"><p class="question-text">Q' + num + '. ' + text + '</p>' + inner + '</div>';
+    }
+
+    // Q1
     var q1html = '<div class="checkbox-options">';
-    for (var i = 0; i < vals.length; i++) {
-        q1html += '<label><input type="checkbox" name="q1[]" value="' + vals[i] + '">' + titles[i+1] + '</label>';
+    for (var i1 = 0; i1 < vals.length; i1++) {
+        q1html += '<label><input type="checkbox" name="q1[]" value="' + vals[i1] + '">' + titles[i1+1] + '</label>';
     }
     q1html += '</div>';
 
-    // Q2〜10 物語の中心は恋愛か（各作品）
+    // Q2〜10 恋愛
     var qRomance = '';
-    for (var i = 0; i < 9; i++) {
-        qRomance += Q(2 + i, '「' + titles[i+1] + '」の物語の中心は恋愛だと思いますか？', likert5('q' + (2 + i)));
+    for (var i2 = 0; i2 < 9; i2++) {
+        qRomance += Q(2 + i2, '「' + titles[i2+1] + '」の物語の中心は恋愛だと思いますか？', likert5('q' + (2 + i2)));
     }
 
-    // Q11〜19 物語の中心は家族／友情か（各作品）
+    // Q11〜19 家族・友情
     var qFamily = '';
-    for (var i = 0; i < 9; i++) {
-        qFamily += Q(11 + i, '「' + titles[i+1] + '」の物語の中心は家族／友情だと思いますか？', likert5('q' + (11 + i)));
+    for (var i3 = 0; i3 < 9; i3++) {
+        qFamily += Q(11 + i3, '「' + titles[i3+1] + '」の物語の中心は家族／友情だと思いますか？', likert5('q' + (11 + i3)));
     }
 
-    // Q20〜28 主体的に行動するか（各プリンセス）
+    // Q20〜28 主体的
     var qActive = '';
-    for (var i = 0; i < 9; i++) {
-        qActive += Q(20 + i, '「' + pnames[i+1] + '」の性格は、主体的に行動するタイプだと思いますか？', likert5('q' + (20 + i)));
+    for (var i4 = 0; i4 < 9; i4++) {
+        qActive += Q(20 + i4, '「' + pnames[i4+1] + '」の性格は、主体的に行動するタイプだと思いますか？', likert5('q' + (20 + i4)));
     }
 
-    // Q29〜37 受動的に行動するか（各プリンセス）
+    // Q29〜37 受動的
     var qPassive = '';
-    for (var i = 0; i < 9; i++) {
-        qPassive += Q(29 + i, '「' + pnames[i+1] + '」の性格は、受動的に行動するタイプだと思いますか？', likert5('q' + (29 + i)));
+    for (var i5 = 0; i5 < 9; i5++) {
+        qPassive += Q(29 + i5, '「' + pnames[i5+1] + '」の性格は、受動的に行動するタイプだと思いますか？', likert5('q' + (29 + i5)));
     }
 
-    // Q38〜42 プリンセスらしさ（X軸）
+    // Q38〜42
     var qValues =
         Q(38, '「プリンセスらしさとは『美しさ』である。」', likert5('q38')) +
         Q(39, '「プリンセスらしさとは『勇敢』である。」', likert5('q39')) +
@@ -587,19 +611,19 @@ function buildSurveyUI() {
         Q(41, '「プリンセスらしさとは『家庭的』である。」', likert5('q41')) +
         Q(42, '「プリンセスらしさとは『恋愛』である。」', likert5('q42'));
 
-    // Q43 理想のプリンセス（1人選択）
+    // Q43
     var q43html = '<div class="radio-options">';
-    for (var i = 0; i < vals.length; i++) {
-        q43html += '<label><input type="radio" name="q43" value="' + vals[i] + '"' + (i === 0 ? ' required' : '') + '>' + pnames[i+1] + '</label>';
+    for (var i6 = 0; i6 < vals.length; i6++) {
+        q43html += '<label><input type="radio" name="q43" value="' + vals[i6] + '"' + (i6 === 0 ? ' required' : '') + '>' + pnames[i6+1] + '</label>';
     }
     q43html += '</div>';
 
-    // Q44〜45 理想のプリンセスを選んだ理由（Y軸）
+    // Q44〜45
     var qReason =
         Q(44, '問43の理由：そのプリンセスの「性格」に憧れるから。', likert5('q44')) +
         Q(45, '問43の理由：そのプリンセスの「ビジュアル」に憧れるから。', likert5('q45'));
 
-    // Q46 実験の楽しさ
+    // Q46
     var q46html = '<div class="radio-options">' +
         '<label><input type="radio" name="q46" value="5" required>とても楽しかった</label>' +
         '<label><input type="radio" name="q46" value="4">楽しかった</label>' +
@@ -608,14 +632,14 @@ function buildSurveyUI() {
         '<label><input type="radio" name="q46" value="1">とてもつまらなかった</label>' +
         '</div>';
 
-    // Q47 子供に見せたい作品（1つ選択）
+    // Q47
     var q47html = '<div class="radio-options">';
-    for (var i = 0; i < vals.length; i++) {
-        q47html += '<label><input type="radio" name="q47" value="' + vals[i] + '"' + (i === 0 ? ' required' : '') + '>' + titles[i+1] + '</label>';
+    for (var i7 = 0; i7 < vals.length; i7++) {
+        q47html += '<label><input type="radio" name="q47" value="' + vals[i7] + '"' + (i7 === 0 ? ' required' : '') + '>' + titles[i7+1] + '</label>';
     }
     q47html += '</div>';
 
-    // Q48 グループ分けの基準（複数選択）
+    // Q48
     var q48html = '<div class="checkbox-options">' +
         '<label><input type="checkbox" name="q48[]" value="story">ストーリーの内容</label>' +
         '<label><input type="checkbox" name="q48[]" value="personality">プリンセスの性格</label>' +
@@ -627,30 +651,24 @@ function buildSurveyUI() {
         '<fieldset class="survey-section"><legend>前提知識</legend>' +
         Q(1, '実験の前にストーリーを知っていた作品を全て選んでください。（複数選択可）', q1html) +
         '</fieldset>' +
-
         '<fieldset class="survey-section"><legend>X軸：画一的⇔多様性 ― 物語の中心テーマ</legend>' +
         qRomance + qFamily +
         '</fieldset>' +
-
         '<fieldset class="survey-section"><legend>Y軸：主体的⇔受動的 ― プリンセスの行動傾向</legend>' +
         qActive + qPassive +
         '</fieldset>' +
-
         '<fieldset class="survey-section"><legend>価値観形成：X軸（プリンセスらしさの定義）</legend>' +
         qValues +
         '</fieldset>' +
-
         '<fieldset class="survey-section"><legend>価値観形成：Y軸（理想のプリンセスと理由）</legend>' +
         Q(43, 'あなたにとっての理想のプリンセスは誰ですか？（1人選択）', q43html) +
         qReason +
         '</fieldset>' +
-
         '<fieldset class="survey-section"><legend>遊びの質問</legend>' +
         Q(46, '実験は楽しかったですか？', q46html) +
         Q(47, '子供に特に見せたいプリンセスの物語はどれですか？（1つ選択）', q47html) +
         Q(48, 'あなたが行ったグループ分けの基準はなんでしたか？（複数選択可）', q48html) +
         '</fieldset>' +
-
         '<button id="submitAndFinishBtn" type="submit">アンケートを回答し、データを送信する</button>';
 
     document.getElementById('submitAndFinishBtn').addEventListener('click', function(e) {
@@ -671,12 +689,19 @@ function buildSurveyUI() {
         experimentData.positions.forEach(function(p) { posMap[p.name] = { x: p.x, y: p.y }; });
         var names2 = Object.keys(posMap);
         var distanceMatrix = {};
-        names2.forEach(function(a) { distanceMatrix[a] = {}; names2.forEach(function(b) { distanceMatrix[a][b] = Math.round(Math.hypot(posMap[a].x - posMap[b].x, posMap[a].y - posMap[b].y)); }); });
+        names2.forEach(function(a) {
+            distanceMatrix[a] = {};
+            names2.forEach(function(b) {
+                distanceMatrix[a][b] = Math.round(Math.hypot(posMap[a].x - posMap[b].x, posMap[a].y - posMap[b].y));
+            });
+        });
         experimentData.distanceMatrix = distanceMatrix;
         experimentData.survey = surveyData;
 
         var finalPositions = [];
-        Object.entries(princessContainers).forEach(function(entry) { finalPositions.push({ name: entry[0], x: entry[1].offsetLeft, y: entry[1].offsetTop }); });
+        Object.entries(princessContainers).forEach(function(entry) {
+            finalPositions.push({ name: entry[0], x: entry[1].offsetLeft, y: entry[1].offsetTop });
+        });
         experimentData.finalPositions = finalPositions;
 
         showLoading(true, 'データを送信中...');
@@ -724,9 +749,9 @@ function initializeApp() {
 
     if (goToScreen2Btn) {
         goToScreen2Btn.addEventListener('click', function() {
-            var name  = subjectNameInput.value.trim();
+            var name   = subjectNameInput.value.trim();
             var ageStr = subjectAgeInput.value.trim();
-            var email = subjectEmailInput.value.trim();
+            var email  = subjectEmailInput.value.trim();
             if (!name || !ageStr || !email) { alert('全ての項目を入力してください。'); return; }
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('有効なメールアドレスを入力してください。'); return; }
             var age = parseInt(ageStr, 10);
@@ -750,7 +775,10 @@ function initializeApp() {
             currentMode = 'clustering'; removeActiveDeleteButton();
             experimentData.placementTime = getCurrentTimestamp();
             experimentData.moveHistory.push({ timestamp: experimentData.placementTime, eventType: 'placementEnd' });
-            Object.values(princessContainers).forEach(function(c) { var h = c.querySelector('.drag-handle'); if (h) { h.style.cursor = 'default'; h.onmousedown = null; } });
+            Object.values(princessContainers).forEach(function(c) {
+                var h = c.querySelector('.drag-handle');
+                if (h) { h.style.cursor = 'default'; h.onmousedown = null; }
+            });
             displayPrincessDetails(null);
             clusterCanvas.classList.add('active-drawing');
             finishPlacementBtn.style.display = 'none';
@@ -765,7 +793,7 @@ function initializeApp() {
             currentMode = 'clusterFeedback'; removeActiveDeleteButton();
             updateStatusMessage('作成した各クラスターについて、以下の項目を記入してください。');
             buildClusterFeedbackUI();
-            goToFeedbackBtn.style.display       = 'none';
+            goToFeedbackBtn.style.display        = 'none';
             saveFeedbackAndDataBtn.style.display = 'inline-block';
             clusterCanvas.classList.remove('active-drawing');
             document.querySelectorAll('.food-container .info-button').forEach(function(btn) { btn.style.pointerEvents = 'none'; });
@@ -776,24 +804,34 @@ function initializeApp() {
     if (saveFeedbackAndDataBtn) {
         saveFeedbackAndDataBtn.addEventListener('click', function() {
             var allProvided = experimentData.clusters.every(function(c) {
-                return c.feedback && c.feedback.reasonCreated && c.feedback.reasonCreated.trim() &&
-                       c.feedback.meaning && c.feedback.meaning.trim() &&
-                       c.feedback.reasonName && c.feedback.reasonName.trim();
+                return c.feedback &&
+                       c.feedback.reasonCreated && c.feedback.reasonCreated.trim() &&
+                       c.feedback.meaning       && c.feedback.meaning.trim() &&
+                       c.feedback.reasonName    && c.feedback.reasonName.trim();
             });
             if (!allProvided) { alert('全てのクラスターについて、3つのフィードバック項目すべてを記入してください。'); return; }
             buildSurveyUI(); showScreen(screen4);
         });
     }
 
-    if (backToScreen1Btn) { backToScreen1Btn.addEventListener('click', function() { if (confirm('前の画面に戻りますか？')) { showScreen(screen1); currentMode = 'intro'; } }); }
+    if (backToScreen1Btn) {
+        backToScreen1Btn.addEventListener('click', function() {
+            if (confirm('前の画面に戻りますか？')) { showScreen(screen1); currentMode = 'intro'; }
+        });
+    }
     if (backToScreen2Btn) {
         backToScreen2Btn.addEventListener('click', function() {
             if (confirm('このフェーズを最初からやり直しますか？\n注意：現在の配置やクラスターの情報は全てリセットされます。')) {
-                document.body.classList.remove('feedback-mode-active'); resetScreen3UI(); showScreen(screen2); currentMode = 'instructions';
+                document.body.classList.remove('feedback-mode-active');
+                resetScreen3UI(); showScreen(screen2); currentMode = 'instructions';
             }
         });
     }
-    if (backToStartBtn2) { backToStartBtn2.addEventListener('click', function() { if (confirm('最初の画面に戻りますか？')) { showScreen(screen1); currentMode = 'intro'; } }); }
+    if (backToStartBtn2) {
+        backToStartBtn2.addEventListener('click', function() {
+            if (confirm('最初の画面に戻りますか？')) { showScreen(screen1); currentMode = 'intro'; }
+        });
+    }
 
     if (clusterCanvas) {
         clusterCanvas.addEventListener('mousedown', handleClusterMouseDown);
