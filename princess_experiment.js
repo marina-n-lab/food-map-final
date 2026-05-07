@@ -149,24 +149,18 @@ function getRandomClusterColor() {
 }
 
 // ===================================================
-// 描画
+// 描画（軸なし）
 // ===================================================
 
-function drawAxes() {
+function drawAllClusters() {
     if (!ctx || !clusterCanvas) return;
-    const W = clusterCanvas.width, H = clusterCanvas.height;
-    const cx = Math.round(W / 2), cy = Math.round(H / 2);
-    const MARGIN = 48, LABEL_OFFSET = 10;
-    ctx.save();
-    ctx.strokeStyle = '#000000'; ctx.lineWidth = 1.5;
-    ctx.beginPath(); ctx.moveTo(MARGIN, cy); ctx.lineTo(W - MARGIN, cy); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(cx, MARGIN); ctx.lineTo(cx, H - MARGIN); ctx.stroke();
-    ctx.fillStyle = '#000000'; ctx.font = 'bold 13px sans-serif';
-    ctx.textAlign = 'left';   ctx.textBaseline = 'middle'; ctx.fillText('友', W - MARGIN + LABEL_OFFSET, cy);
-    ctx.textAlign = 'right';  ctx.textBaseline = 'middle'; ctx.fillText('恋', MARGIN - LABEL_OFFSET, cy);
-    ctx.textAlign = 'center'; ctx.textBaseline = 'bottom'; ctx.fillText('主', cx, MARGIN - LABEL_OFFSET);
-    ctx.textBaseline = 'top';                               ctx.fillText('能', cx, H - MARGIN + LABEL_OFFSET);
-    ctx.restore();
+    ctx.clearRect(0, 0, clusterCanvas.width, clusterCanvas.height);
+    experimentData.clusters.forEach(function(cluster) {
+        if (cluster.type === 'circle' && cluster.radius > 0) {
+            const fillColor = cluster.color.replace('rgb(', 'rgba(').replace(')', ', 0.2)');
+            drawCircle(cluster.centerX, cluster.centerY, cluster.radius, cluster.color, fillColor, 2, true);
+        }
+    });
 }
 
 function drawCircle(centerX, centerY, radius, strokeStyle, fillStyle, lineWidth, isFilled) {
@@ -177,18 +171,6 @@ function drawCircle(centerX, centerY, radius, strokeStyle, fillStyle, lineWidth,
     if (lineWidth)   ctx.lineWidth   = lineWidth;
     ctx.stroke();
     if (isFilled !== false && fillStyle) { ctx.fillStyle = fillStyle; ctx.fill(); }
-}
-
-function drawAllClusters() {
-    if (!ctx || !clusterCanvas) return;
-    ctx.clearRect(0, 0, clusterCanvas.width, clusterCanvas.height);
-    drawAxes();
-    experimentData.clusters.forEach(function(cluster) {
-        if (cluster.type === 'circle' && cluster.radius > 0) {
-            const fillColor = cluster.color.replace('rgb(', 'rgba(').replace(')', ', 0.2)');
-            drawCircle(cluster.centerX, cluster.centerY, cluster.radius, cluster.color, fillColor, 2, true);
-        }
-    });
 }
 
 // ===================================================
@@ -417,7 +399,7 @@ function initializeExperiment() {
     if (!canvasContainer || !clusterCanvas || !ctx || !detailsPanel) { updateStatusMessage("エラー: 実験エリアの初期化に失敗しました。"); return; }
     clusterCanvas.width  = canvasContainer.clientWidth;
     clusterCanvas.height = canvasContainer.clientHeight;
-    ctx.clearRect(0, 0, clusterCanvas.width, clusterCanvas.height); drawAxes();
+    ctx.clearRect(0, 0, clusterCanvas.width, clusterCanvas.height);
     experimentData.startTime = Date.now(); experimentData.moveHistory = []; experimentData.clusters = []; experimentData.positions = [];
     experimentData.meta = { screen: { w: window.innerWidth, h: window.innerHeight }, canvas: { w: clusterCanvas.width, h: clusterCanvas.height }, userAgent: navigator.userAgent, scriptVersion: 'v12-princess' };
     detailsPanel.innerHTML = '<h3 id="details-food-name"></h3><img id="details-food-image" src="" alt="選択されたプリンセスの画像" style="display:none;"><div id="details-food-info"></div><p id="details-placeholder" class="info-text" style="display:block;">プリンセスの[i]ボタンをクリックすると、ここに詳細情報が表示されます。</p>';
@@ -528,38 +510,32 @@ function buildSurveyUI() {
     ];
     var vals = ['aurora','annaandelsa','rapunzel','snow_white','jasmine','belle','cinderella','moana','ariel'];
 
-    // Q1 前提知識（複数選択）
     var q1html = '<div class="checkbox-options">';
     for (var i = 0; i < vals.length; i++) {
         q1html += '<label><input type="checkbox" name="q1[]" value="' + vals[i] + '">' + titles[i+1] + '</label>';
     }
     q1html += '</div>';
 
-    // Q2〜10 物語の中心は恋愛か（各作品）
     var qRomance = '';
     for (var i = 0; i < 9; i++) {
         qRomance += Q(2 + i, '「' + titles[i+1] + '」の物語の中心は恋愛だと思いますか？', likert5('q' + (2 + i)));
     }
 
-    // Q11〜19 物語の中心は家族／友情か（各作品）
     var qFamily = '';
     for (var i = 0; i < 9; i++) {
         qFamily += Q(11 + i, '「' + titles[i+1] + '」の物語の中心は家族／友情だと思いますか？', likert5('q' + (11 + i)));
     }
 
-    // Q20〜28 主体的に行動するか（各プリンセス）
     var qActive = '';
     for (var i = 0; i < 9; i++) {
         qActive += Q(20 + i, '「' + pnames[i+1] + '」の性格は、主体的に行動するタイプだと思いますか？', likert5('q' + (20 + i)));
     }
 
-    // Q29〜37 受動的に行動するか（各プリンセス）
     var qPassive = '';
     for (var i = 0; i < 9; i++) {
         qPassive += Q(29 + i, '「' + pnames[i+1] + '」の性格は、受動的に行動するタイプだと思いますか？', likert5('q' + (29 + i)));
     }
 
-    // Q38〜42 プリンセスらしさ（X軸）
     var qValues =
         Q(38, '「プリンセスらしさとは『美しさ』である。」', likert5('q38')) +
         Q(39, '「プリンセスらしさとは『勇敢』である。」', likert5('q39')) +
@@ -567,19 +543,16 @@ function buildSurveyUI() {
         Q(41, '「プリンセスらしさとは『家庭的』である。」', likert5('q41')) +
         Q(42, '「プリンセスらしさとは『恋愛』である。」', likert5('q42'));
 
-    // Q43 理想のプリンセス（1人選択）
     var q43html = '<div class="radio-options">';
     for (var i = 0; i < vals.length; i++) {
         q43html += '<label><input type="radio" name="q43" value="' + vals[i] + '"' + (i === 0 ? ' required' : '') + '>' + pnames[i+1] + '</label>';
     }
     q43html += '</div>';
 
-    // Q44〜45 理想のプリンセスを選んだ理由（Y軸）
     var qReason =
         Q(44, '問43の理由：そのプリンセスの「性格」に憧れるから。', likert5('q44')) +
         Q(45, '問43の理由：そのプリンセスの「ビジュアル」に憧れるから。', likert5('q45'));
 
-    // Q46 実験の楽しさ
     var q46html = '<div class="radio-options">' +
         '<label><input type="radio" name="q46" value="5" required>とても楽しかった</label>' +
         '<label><input type="radio" name="q46" value="4">楽しかった</label>' +
@@ -588,14 +561,12 @@ function buildSurveyUI() {
         '<label><input type="radio" name="q46" value="1">とてもつまらなかった</label>' +
         '</div>';
 
-    // Q47 子供に見せたい作品（1つ選択）
     var q47html = '<div class="radio-options">';
     for (var i = 0; i < vals.length; i++) {
         q47html += '<label><input type="radio" name="q47" value="' + vals[i] + '"' + (i === 0 ? ' required' : '') + '>' + titles[i+1] + '</label>';
     }
     q47html += '</div>';
 
-    // Q48 グループ分けの基準（複数選択）
     var q48html = '<div class="checkbox-options">' +
         '<label><input type="checkbox" name="q48[]" value="story">ストーリーの内容</label>' +
         '<label><input type="checkbox" name="q48[]" value="personality">プリンセスの性格</label>' +
