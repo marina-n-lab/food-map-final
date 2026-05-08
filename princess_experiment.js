@@ -621,7 +621,6 @@ function buildSurveyUI() {
         experimentData.finalPositions = finalPositions;
 
         showLoading(true, 'データを送信中...');
-        alert("ここまで来た");
         var gasUrl = 'https://script.google.com/macros/s/AKfycbyyN4OLIJiAU7F0hVuNvSn-I_dmNmB2hi58Z9P499YudWRM-Zodxbn7EeFBY9ZXdspu/exec';
         fetch(gasUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(Object.assign({}, experimentData, { experimentEndTimeISO: new Date().toISOString() })) })
             .catch(function(err) { console.warn('[WARNING] fetch:', err); })
