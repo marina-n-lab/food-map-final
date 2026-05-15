@@ -621,7 +621,7 @@ function buildSurveyUI() {
         experimentData.finalPositions = finalPositions;
 
         showLoading(true, 'データを送信中...');
-        var gasUrl = 'https://script.google.com/macros/s/AKfycbyyN4OLIJiAU7F0hVuNvSn-I_dmNmB2hi58Z9P499YudWRM-Zodxbn7EeFBY9ZXdspu/exec';
+        var gasUrl = 'https://script.google.com/a/macros/g.chuo-u.ac.jp/s/AKfycbyVBoHVHH6K7OrHUfClSxvrZW7s3AUDOLYd0lAUXh3xB_5T0hlYP9OdlRSb-ZMMGRz-BA/exec';
         fetch(gasUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(Object.assign({}, experimentData, { experimentEndTimeISO: new Date().toISOString() })) })
             .catch(function(err) { console.warn('[WARNING] fetch:', err); })
             .finally(function() { showScreen(screen5); showLoading(false); });
