@@ -34,8 +34,8 @@ let princessList = [
     { name: "snow_white",  label: "白雪姫",       imgSrc: "snow_white_37217e1f.jpeg",                    info: "" },
     { name: "jasmine",     label: "ジャスミン",   imgSrc: "1280x1280.webp",                              info: "" },
     { name: "belle",       label: "ベル",         imgSrc: "belle_a0c06a3b.jpeg",                         info: "" },
-    { name: "cinderella",  label: "シンデレラ",   imgSrc: "cinderella_fc_cinderella_t_2e79b61f.jpeg",                             info: "" },
-    { name: "moana",       label: "モアナ",       imgSrc: "モアナ画像_from disneu.co.jp:fc:moana.jpeg", info: "" },
+    { name: "cinderella",  label: "シンデレラ",   imgSrc: "cinderella_fc_cinderella_t_2e79b61f.jpeg",    info: "" },
+    { name: "moana",       label: "モアナ",       imgSrc: "モアナ画像_from disneu.co.jp:fc:moana.jpeg",  info: "" },
     { name: "ariel",       label: "アリエル",     imgSrc: "ariel_fc_little-mermaid_t_c2b937fa.jpeg",    info: "" },
 ];
 
@@ -621,10 +621,24 @@ function buildSurveyUI() {
         experimentData.finalPositions = finalPositions;
 
         showLoading(true, 'データを送信中...');
+
+        // =========================================================
+        // ★ 修正箇所：Content-Type を text/plain に指定
+        //    （no-cors モードでは application/json が使えないため）
+        // =========================================================
         var gasUrl = 'https://script.google.com/macros/s/AKfycbwQ6xNQukejgjImBGXmLww0ThmSg0z858UdrTDK0QihrUcMH_pts2JLfczWwf6bhEaM/exec';
-        fetch(gasUrl, { method: 'POST', mode: 'no-cors', body: JSON.stringify(Object.assign({}, experimentData, { experimentEndTimeISO: new Date().toISOString() })) })
-            .catch(function(err) { console.warn('[WARNING] fetch:', err); })
-            .finally(function() { showScreen(screen5); showLoading(false); });
+        var payload = JSON.stringify(Object.assign({}, experimentData, {
+            experimentEndTimeISO: new Date().toISOString()
+        }));
+
+        fetch(gasUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain' },
+            body: payload
+        })
+        .catch(function(err) { console.warn('[WARNING] fetch:', err); })
+        .finally(function() { showScreen(screen5); showLoading(false); });
     });
 }
 
